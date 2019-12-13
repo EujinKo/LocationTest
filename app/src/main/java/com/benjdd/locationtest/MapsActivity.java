@@ -106,6 +106,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
              * (B) Add polygon to the map
              * (C) Set the fill color
              */
+            PolygonOptions polygonOptions = getPolygonOptionsForLocation(location);
+            Polygon polygon = mMap.addPolygon(polygonOptions);
+            polygon.setClickable(true);
+            polygon.setFillColor(Integer.decode(location.locationColor));
+
         }
     }
 
@@ -179,6 +184,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                      * Assume that the json variable will be a JSONObject populates with results from a places search.
                      * You should put a Marker on the map for each resulting location, with a corresponding label.
                      */
+                    JSONObject loc = results.getJSONObject(i)
+                            .getJSONObject("geometry")
+                            .getJSONObject("location");
+                    double lat = loc.getDouble("lat");
+                    double lng = loc.getDouble("lng");
+                    String label = results.getJSONObject(i)
+                            .getString("name");
+
+                    LatLng location = new LatLng(lat,lng);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
